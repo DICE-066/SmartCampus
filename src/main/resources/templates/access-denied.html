@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Access Denied')}"></head>
+<body class="auth-body">
+  <main class="auth-page">
+    <section class="auth-card text-center">
+      <span class="brand-icon mb-3 d-inline-flex" style="width:56px;height:56px;font-size:1.5rem"><i class="bi bi-shield-exclamation" aria-hidden="true"></i></span>
+      <h1 class="h3 mb-2">Access denied</h1>
+      <p class="text-muted mb-4">You don't have permission to view that page.</p>
+      <a class="btn btn-primary w-100" th:href="@{/}">Return to SmartCampus</a>
+    </section>
+  </main>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

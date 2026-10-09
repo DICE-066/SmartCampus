@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Documents')}"></head>
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <aside th:replace="~{fragments/sidebar :: sidebar('documents')}"></aside>
+    <div class="admin-main">
+      <nav th:replace="~{fragments/topbar :: topbar}"></nav>
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span>
+              <div><p class="eyebrow mb-1">Documents</p><h1 class="h3 mb-1">Student documents</h1></div>
+            </div>
+            <div class="heading-actions">
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Dashboard</a>
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasRole('STUDENT')" th:href="@{/}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Home</a>
+            </div>
+          </div>
+
+          <section class="row g-3 mt-1" th:unless="${studentId}">
+            <div class="col-12 col-md-6">
+              <form class="panel" th:action="@{/documents}" method="get">
+                <label class="form-label">Student ID</label>
+                <input class="form-control" name="studentId">
+                <button class="btn btn-primary mt-3" type="submit">Load</button>
+              </form>
+            </div>
+          </section>
+
+          <section class="row g-3 mt-1" th:if="${studentId}">
+            <div class="col-12">
+              <div class="alert alert-success py-2" th:if="${message}" th:text="${message}"></div>
+              <div class="panel">
+                <div class="panel-header">
+                  <div><h2 class="h5 mb-1 section-title"><i class="bi bi-files" aria-hidden="true"></i><span>Files</span></h2></div>
+                  <a class="btn btn-primary btn-sm" th:href="@{'/documents/upload'(studentId=${studentId})}"><i class="bi bi-upload" aria-hidden="true"></i> Upload document</a>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead><tr><th>File</th><th>Uploaded</th><th class="text-end">Action</th></tr></thead>
+                    <tbody>
+                      <tr th:each="d : ${documents}">
+                        <td th:text="${d.fileName}"></td>
+                        <td th:text="${d.uploadedAt}"></td>
+                        <td class="text-end"><a class="btn btn-light btn-sm" th:href="@{'/documents/' + ${d.documentId} + '/download'}">Download</a></td>
+                      </tr>
+                      <tr th:if="${#lists.isEmpty(documents)}"><td colspan="3">No documents uploaded yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

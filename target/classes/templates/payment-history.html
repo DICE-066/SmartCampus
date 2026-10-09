@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Payment History')}"></head>
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <aside th:replace="~{fragments/sidebar :: sidebar('finance')}"></aside>
+    <div class="admin-main">
+      <nav th:replace="~{fragments/topbar :: topbar}"></nav>
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-receipt-cutoff" aria-hidden="true"></i></span>
+              <div><p class="eyebrow mb-1">Finance</p><h1 class="h3 mb-1">Payment history</h1></div>
+            </div>
+            <div class="heading-actions">
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasAnyRole('ADMIN','FINANCE_OFFICER')" th:href="@{/finance}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back</a>
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasRole('STUDENT')" th:href="@{/}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Home</a>
+            </div>
+          </div>
+
+          <section class="row g-3 mt-1" th:unless="${studentId}" sec:authorize="hasAnyRole('ADMIN','FINANCE_OFFICER')">
+            <div class="col-12 col-md-6">
+              <form class="panel" th:action="@{/finance/history}" method="get">
+                <label class="form-label">Student ID</label>
+                <input class="form-control" name="studentId">
+                <button class="btn btn-primary mt-3" type="submit">Load</button>
+              </form>
+            </div>
+          </section>
+
+          <section class="row g-3 mt-1" th:if="${studentId}">
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-warning">
+                <div class="metric-top"><span class="metric-label">Tuition fee</span><span class="metric-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></span></div>
+                <div class="metric-value" th:text="'R ' + ${#numbers.formatDecimal(tuitionFee,1,2)}">R 0</div>
+              </article>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-danger">
+                <div class="metric-top"><span class="metric-label">Outstanding balance</span><span class="metric-icon"><i class="bi bi-exclamation-circle" aria-hidden="true"></i></span></div>
+                <div class="metric-value" th:text="'R ' + ${#numbers.formatDecimal(balance,1,2)}">R 0</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="row g-3 mt-1" th:if="${studentId}">
+            <div class="col-12">
+              <div class="panel">
+                <div class="panel-header">
+                  <div><h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Payments</span></h2></div>
+                  <a class="btn btn-primary btn-sm" sec:authorize="hasAnyRole('ADMIN','FINANCE_OFFICER')" th:href="@{'/finance/payment-form'(studentId=${studentId})}"><i class="bi bi-plus-circle" aria-hidden="true"></i> Record payment</a>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead><tr><th>Date</th><th>Amount</th></tr></thead>
+                    <tbody>
+                      <tr th:each="p : ${payments}">
+                        <td th:text="${p.paymentDate}"></td>
+                        <td th:text="'R ' + ${#numbers.formatDecimal(p.amount,1,2)}"></td>
+                      </tr>
+                      <tr th:if="${#lists.isEmpty(payments)}"><td colspan="2">No payments recorded yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

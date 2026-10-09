@@ -1,0 +1,83 @@
+<aside th:fragment="sidebar(active)" class="admin-sidebar" id="adminSidebar" aria-label="Main navigation"
+       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <div class="sidebar-header">
+    <a class="brand-mark" th:href="@{/}" aria-label="SmartCampus">
+      <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+      <span class="brand-copy">
+        <span class="brand-title">SmartCampus</span>
+        <span class="brand-subtitle">CMPG 224</span>
+      </span>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${active == 'dashboard'} ? ' active'" th:href="@{/admin}">
+      <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+      <span class="nav-text">Dashboard</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${active == 'students'} ? ' active'" th:href="@{/students}">
+      <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+      <span class="nav-text">Students</span>
+    </a>
+    <a class="nav-link" sec:authorize="hasRole('STUDENT')" th:classappend="${active == 'students'} ? ' active'" th:href="@{/students/me}">
+      <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
+      <span class="nav-text">My Information</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${active == 'academic'} ? ' active'" th:href="@{/academic}">
+      <span class="nav-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></span>
+      <span class="nav-text">Academic Records</span>
+    </a>
+    <a class="nav-link" sec:authorize="hasRole('STUDENT')" th:classappend="${active == 'academic'} ? ' active'" th:href="@{/academic/me}">
+      <span class="nav-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></span>
+      <span class="nav-text">My Results &amp; GPA</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasAnyRole('ADMIN','FINANCE_OFFICER')" th:classappend="${active == 'finance'} ? ' active'" th:href="@{/finance}">
+      <span class="nav-icon"><i class="bi bi-cash-coin" aria-hidden="true"></i></span>
+      <span class="nav-text">Finance</span>
+    </a>
+    <a class="nav-link" sec:authorize="hasRole('STUDENT')" th:classappend="${active == 'finance'} ? ' active'" th:href="@{/finance/me}">
+      <span class="nav-icon"><i class="bi bi-cash-coin" aria-hidden="true"></i></span>
+      <span class="nav-text">My Fees</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${active == 'documents'} ? ' active'" th:href="@{/documents}">
+      <span class="nav-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span>
+      <span class="nav-text">Documents</span>
+    </a>
+    <a class="nav-link" sec:authorize="hasRole('STUDENT')" th:classappend="${active == 'documents'} ? ' active'" th:href="@{/documents/me}">
+      <span class="nav-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span>
+      <span class="nav-text">My Documents</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasAnyRole('ADMIN','FINANCE_OFFICER')" th:classappend="${active == 'reports'} ? ' active'" th:href="@{/reports}">
+      <span class="nav-icon"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>
+      <span class="nav-text">Reports</span>
+    </a>
+
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${active == 'admin-users'} ? ' active'" th:href="@{/admin/users}">
+      <span class="nav-icon"><i class="bi bi-link-45deg" aria-hidden="true"></i></span>
+      <span class="nav-text">Link Accounts</span>
+    </a>
+
+    <a class="nav-link" th:classappend="${active == 'profile'} ? ' active'" th:href="@{/profile}">
+      <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-user">
+    <img class="avatar-img avatar-md sidebar-user-avatar" th:src="@{/images/avatar/avatar.jpg}" alt="User avatar">
+    <strong sec:authentication="name">User</strong>
+    <small sec:authorize="hasRole('ADMIN')">Administrator</small>
+    <small sec:authorize="hasRole('STUDENT')">Student</small>
+    <small sec:authorize="hasRole('FINANCE_OFFICER')">Finance Officer</small>
+  </div>
+
+  <div class="sidebar-footer">
+    <span class="status-dot"></span>
+    <span class="sidebar-footer-text">SmartCampus — CMPG 224</span>
+  </div>
+</aside>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Home')}"></head>
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <aside th:replace="~{fragments/sidebar :: sidebar('home')}"></aside>
+    <div class="admin-main">
+      <nav th:replace="~{fragments/topbar :: topbar}"></nav>
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-house" aria-hidden="true"></i></span>
+              <div>
+                <p class="eyebrow mb-1">Welcome</p>
+                <h1 class="h3 mb-1">SmartCampus</h1>
+                <p class="text-muted mb-0">You're logged in as <strong sec:authentication="name">user</strong>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-danger py-2 mt-3" th:if="${error}" th:text="${error}"></div>
+
+          <section class="row g-3 mt-1" sec:authorize="hasRole('STUDENT')">
+            <div class="col-12 col-sm-6 col-xl-3">
+              <a class="metric-card metric-primary text-decoration-none d-block" th:href="@{/students/me}">
+                <div class="metric-top"><span class="metric-label">My Information</span><span class="metric-icon"><i class="bi bi-person" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <a class="metric-card metric-success text-decoration-none d-block" th:href="@{/academic/me}">
+                <div class="metric-top"><span class="metric-label">My Results &amp; GPA</span><span class="metric-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <a class="metric-card metric-warning text-decoration-none d-block" th:href="@{/finance/me}">
+                <div class="metric-top"><span class="metric-label">My Fees</span><span class="metric-icon"><i class="bi bi-cash-coin" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <a class="metric-card metric-danger text-decoration-none d-block" th:href="@{/documents/me}">
+                <div class="metric-top"><span class="metric-label">My Documents</span><span class="metric-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+          </section>
+
+          <section class="row g-3 mt-1" sec:authorize="hasRole('FINANCE_OFFICER')">
+            <div class="col-12 col-md-6">
+              <a class="metric-card metric-primary text-decoration-none d-block" th:href="@{/finance}">
+                <div class="metric-top"><span class="metric-label">Finance</span><span class="metric-icon"><i class="bi bi-cash-coin" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+            <div class="col-12 col-md-6">
+              <a class="metric-card metric-success text-decoration-none d-block" th:href="@{/reports}">
+                <div class="metric-top"><span class="metric-label">Reports</span><span class="metric-icon"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span></div>
+              </a>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

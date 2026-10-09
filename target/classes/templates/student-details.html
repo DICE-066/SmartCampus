@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Student Details')}"></head>
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <aside th:replace="~{fragments/sidebar :: sidebar('students')}"></aside>
+    <div class="admin-main">
+      <nav th:replace="~{fragments/topbar :: topbar}"></nav>
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+              <div>
+                <p class="eyebrow mb-1">Student Management</p>
+                <h1 class="h3 mb-1">Student details</h1>
+              </div>
+            </div>
+            <div class="heading-actions">
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasRole('ADMIN')" th:href="@{/students}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to students</a>
+              <a class="btn btn-outline-secondary btn-sm" sec:authorize="hasRole('STUDENT')" th:href="@{/}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Home</a>
+            </div>
+          </div>
+
+          <section class="row g-3 mt-1">
+            <div class="col-12 col-xl-6">
+              <div class="panel">
+                <div class="panel-header"><div><h2 class="h5 mb-1 section-title"><i class="bi bi-person" aria-hidden="true"></i><span th:text="${student.fullName}">Name</span></h2></div></div>
+                <div class="info-list mt-2">
+                  <div><span>Student number</span><strong th:text="${student.studentNumber}"></strong></div>
+                  <div><span>Full name</span><strong th:text="${student.fullName}"></strong></div>
+                  <div><span>Programme</span><strong th:text="${student.programme}"></strong></div>
+                  <div><span>Year of study</span><strong th:text="${student.yearOfStudy}"></strong></div>
+                  <div><span>Status</span><strong><span class="badge text-bg-success" th:text="${student.status}"></span></strong></div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                  <a class="btn btn-primary btn-sm" sec:authorize="hasRole('ADMIN')" th:href="@{'/students/edit/' + ${student.studentId}}"><i class="bi bi-pencil" aria-hidden="true"></i> Edit</a>
+                  <a class="btn btn-outline-secondary btn-sm" th:href="@{'/academic/results'(studentId=${student.studentId})}"><i class="bi bi-mortarboard" aria-hidden="true"></i> Academic records</a>
+                  <a class="btn btn-outline-secondary btn-sm" th:href="@{'/finance/history'(studentId=${student.studentId})}"><i class="bi bi-cash-coin" aria-hidden="true"></i> Fees</a>
+                  <a class="btn btn-outline-secondary btn-sm" th:href="@{'/documents'(studentId=${student.studentId})}"><i class="bi bi-folder2-open" aria-hidden="true"></i> Documents</a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

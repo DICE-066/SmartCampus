@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Link Accounts')}"></head>
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <aside th:replace="~{fragments/sidebar :: sidebar('admin-users')}"></aside>
+    <div class="admin-main">
+      <nav th:replace="~{fragments/topbar :: topbar}"></nav>
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-link-45deg" aria-hidden="true"></i></span>
+              <div><p class="eyebrow mb-1">Administration</p><h1 class="h3 mb-1">Link accounts to students</h1></div>
+            </div>
+            <div class="heading-actions"><a class="btn btn-outline-secondary btn-sm" th:href="@{/admin}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Dashboard</a></div>
+          </div>
+
+          <div class="alert alert-success py-2 mt-3" th:if="${message}" th:text="${message}"></div>
+
+          <section class="row g-3 mt-1">
+            <div class="col-12">
+              <div class="panel">
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead><tr><th>Username</th><th>Role</th><th>Linked student</th><th></th></tr></thead>
+                    <tbody>
+                      <tr th:each="u : ${users}">
+                        <td th:text="${u.username}"></td>
+                        <td><span class="badge text-bg-secondary" th:text="${u.role}"></span></td>
+                        <td>
+                          <form class="d-flex gap-2" th:action="@{'/admin/users/' + ${u.userId} + '/link'}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <select class="form-select form-select-sm" name="studentId" style="max-width:260px">
+                              <option value="">— none —</option>
+                              <option th:each="s : ${students}" th:value="${s.studentId}"
+                                      th:text="${s.studentNumber} + ' — ' + ${s.fullName}"
+                                      th:selected="${u.linkedStudentId != null and u.linkedStudentId == s.studentId}"></option>
+                            </select>
+                            <button class="btn btn-light btn-sm" type="submit">Save</button>
+                          </form>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>
